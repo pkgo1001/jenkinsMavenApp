@@ -1,6 +1,6 @@
 
 job('Java Maven App con DSL Conn trigger Push desde GIT') {
-    description('Job creado desde el DSL en el repositorio de Git')
+    description('Job creado desde el DSL en el repositorio de Git haciendo trigger con cada push')
     scm {
         git('https://github.com/pkgo1001/jenkinsMavenApp.git', 'main') { node ->
             node / gitConfigName('pkgo1001')
