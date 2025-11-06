@@ -1,4 +1,4 @@
-job('Java Maven App DSL') {
+job('Java Maven App con DSL desde GIT') {
     description('Job creado desde el DSL en el repositorio de Git')
     scm {
         git('https://github.com/pkgo1001/jenkinsMavenApp.git', 'main') { node ->
