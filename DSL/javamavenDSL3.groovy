@@ -1,14 +1,15 @@
-job('Java Maven App DSL 3') {
-    description('Java Maven App con DSL para el curso de Jenkins')
+
+job('Java Maven App con DSL Conn trigger Push desde GIT') {
+    description('Job creado desde el DSL en el repositorio de Git')
     scm {
-        git('https://github.com/macloujulian/simple-java-maven-app.git', 'master') { node ->
-            node / gitConfigName('macloujulian')
-            node / gitConfigEmail('macloujulian@gmail.com')
+        git('https://github.com/pkgo1001/jenkinsMavenApp.git', 'main') { node ->
+            node / gitConfigName('pkgo1001')
+            node / gitConfigEmail('pokegoacc1001@gmail.com')
         }
-    }
-    triggers {
+	triggers {
     	githubPush()
-    }    
+    }
+    }
     steps {
         maven {
           mavenInstallation('mavenjenkins')
@@ -20,46 +21,12 @@ job('Java Maven App DSL 3') {
         }
         shell('''
           echo "Entrega: Desplegando la aplicación" 
-          java -jar "/var/jenkins_home/workspace/Java Maven App DSL 3/target/my-app-1.0-SNAPSHOT.jar"
+          java -jar "/var/jenkins_home/workspace/Java Maven App DSL/target/my-app-1.0-SNAPSHOT.jar"
         ''')  
     }
     publishers {
         archiveArtifacts('target/*.jar')
         archiveJunit('target/surefire-reports/*.xml')
-	      slackNotifier {
-            notifyAborted(true)
-            notifyEveryFailure(true)
-            notifyNotBuilt(false)
-            notifyUnstable(false)
-            notifyBackToNormal(true)
-            notifySuccess(true)
-            notifyRepeatedFailure(false)
-            startNotification(false)
-            includeTestSummary(false)
-            includeCustomMessage(false)
-            customMessage(null)
-            sendAs(null)
-            commitInfoChoice('NONE')
-            teamDomain(null)
-            authToken(null)
-       }
+      	mailer('pokegoacc1001@gmail.com', false, false)
     }
-}
-
-job('Job test Hola Mundo') {
-	description('Aplicacion Hola Mundo de Prueba')
-	scm {
-		git('https://github.com/macloujulian/simple-java-maven-app.git', 'master') { node ->
-		    node / gitConfigName('macloujulian')
-		    node / gitConfigEmail('macloujulian@gmail.com')
-		}
-	}
-	triggers {
-    		githubPush()
-    	}    
-	steps {
-		shell('''
-			echo "Hola Mundo!!!!"
-		''')
-	}
 }
